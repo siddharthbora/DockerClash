@@ -4,25 +4,26 @@ agent:
   machine:
     type: e1-standard-2
     os_image: ubuntu1804
-global_job_config:
-  prologue:
-    commands:
-      - sem-version python 3.7
-      - checkout
-      - cache restore
-      - mkdir -p .pip_cache
-      - pip install --cache-dir .pip_cache -r requirements.txt
-      - cd martor_demo
-      - 'python manage.py makemigrations '
-      - python manage.py migrate
-      - cd ..
 blocks:
-  - name: Docker
+  - name: Docker build
     task:
       jobs:
-        - name: docker
+        - name: Build
           commands:
             - 'echo "${DOCKER_PASSWORD}" | docker login -u "${DOCKER_USERNAME}" --password-stdin'
             - docker pull $DOCKER_USERNAME/clash || true
             - 'docker build --cache-from=$DOCKER_USERNAME/clash:latest -t $DOCKER_USERNAME/clash .'
             - 'docker push $DOCKER_USERNAME/clash:latest'
+      secrets:
+        - name: dockerhub
+      prologue:
+        commands:
+          - sem-version python 3.7
+          - checkout
+          - cache restore
+          - mkdir -p .pip_cache
+          - pip install --cache-dir .pip_cache -r requirements.txt
+          - cd martor_demo
+          - 'python manage.py makemigrations '
+          - python manage.py migrate
+          - cd ..
