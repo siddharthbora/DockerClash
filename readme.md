@@ -211,7 +211,7 @@ Push your build image at local PC to dockerhub with the name your provded
 in the job command section.
 
 
-__PIPELINE ALL UP!!__
+__PIPELINE IS ALL UP!!__
 
 ### TO GET THE IMAGE DIRECTLY USE THE FOLLOWING COMMAND
 
