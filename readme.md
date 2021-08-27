@@ -215,4 +215,6 @@ __PIPELINE ALL UP!!__
 
 ### TO GET THE IMAGE DIRECTLY USE THE FOLLOWING COMMAND
 
-```docker pull siddharthbora/clash```
+```
+$ docker pull siddharthbora/clash
+```
