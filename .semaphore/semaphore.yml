@@ -33,7 +33,7 @@ blocks:
             - python manage.py test
         - name: Checklist
           commands:
-            - cd martor_demo
+            - cd clash
             - python manage.py check --deploy
         - name: Style Check
           commands:
