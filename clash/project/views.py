@@ -1,14 +1,12 @@
-from django.shortcuts import render, redirect, HttpResponse
+from django.shortcuts import render, redirect
 import json
 from django.http import JsonResponse
-from django.contrib.auth.models import User, update_last_login
+from django.contrib.auth.models import User
 from django.contrib import auth
 from .models import Register, Response, Questions
 from django.http import HttpResponseRedirect
 from django.contrib.auth import authenticate, login, logout
 from django.urls import reverse
-from django.template.defaultfilters import linebreaksbr
-from django.template.defaultfilters import linebreaks
 import re
 import random
 import datetime
@@ -59,6 +57,8 @@ def handletab(request):
     return JsonResponse(data)
 
 # to be used only when you have a strong backend which can process multiple requests
+
+
 def check(request):
     username_lst = []
     user_list = User.objects.values()
@@ -301,7 +301,7 @@ def visionise(request):
             getuser.save()
             question.question = change_que(question)
             return render(request, 'task2part2temp/visionise.html', {'user': getuser, 'question': question, 'timemin': [time[0]], 'timesec': [time[1]], 'buttonshow': len(json.loads(getuser.visionlst)), 'mks': 5, 'time_rem': getuser.time_rem})
-    except Exception as e:
+    except Exception:
         return render(request, 'task2part2temp/signup.html', {'msg': 'Login First ..!! '})
 
 # @cache_control(no_cache=True,must_revalidate=True,no_store=True)
@@ -320,7 +320,7 @@ def rendinst(request):
 
 def success(request):
     try:
-        msg3 = ""
+        #msg3 = ""
         getuser = Register.objects.get(user=request.user)
         if getuser.status:
             setlastlogintime(request.user, getuser)
@@ -340,7 +340,7 @@ def success(request):
         seconds = int(total_seconds % 60)
         if getuser.progress >= 100:
             getuser.freezebar = True
-        msg2 = "TIME REMAINING  = " + str(minutes) + ":" + str(seconds)
+        #msg2 = "TIME REMAINING  = " + str(minutes) + ":" + str(seconds)
         lst = json.loads(getuser.quelist)
         flst = json.loads(getuser.queflist)
         if not getuser.user.is_authenticated:
@@ -354,7 +354,7 @@ def success(request):
                 allow = True
             if allow:
                 if getuser.flag == 0 and request.method == 'POST':
-                    msg3 = "congrats u won chance to reattempt a question"
+                    #msg3 = "congrats u won chance to reattempt a question"
                     try:
                         quenumber = request.POST['quenum']
                         lst.append(flst[int(quenumber) - 1])  # 152
@@ -364,30 +364,30 @@ def success(request):
                         getuser.marks = 10
                     recfun(getuser)
                 elif getuser.flag == 1:
-                    msg3 = "Unlucky! -5 from ur total"
+                    #msg3 = "Unlucky! -5 from ur total"
                     getuser.total_score -= 5
                     recfun(getuser)
                 elif getuser.flag == 2:
-                    msg3 = "congrats ur time is freezed for current question"
+                    #msg3 = "congrats ur time is freezed for current question"
 
                     recfun(getuser)
                 elif getuser.flag == 3:
-                    msg3 = "Unlucky! -8 + 4 for next 3 questions"
+                    #msg3 = "Unlucky! -8 + 4 for next 3 questions"
                     getuser.marks = 3
                     getuser.flashblind = 3
                     recfun(getuser)
                 elif getuser.flag == 4:
-                    msg3 = "congrats you have no negative marks for next 3 questions"
+                    #msg3 = "congrats you have no negative marks for next 3 questions"
                     getuser.marks = 4
                     getuser.flashblind = 3
                     recfun(getuser)
                 elif getuser.flag == 5:
-                    msg3 = "Unlucky! u cannot spin here after"
+                    #msg3 = "Unlucky! u cannot spin here after"
                     getuser.checkpoint = -1
                     getuser.spincount = 0
                     recfun(getuser)
                 elif getuser.flag == 6:
-                    msg3 = "congrats you have +16-10 marking schmeme for current question"
+                    #msg3 = "congrats you have +16-10 marking schmeme for current question"
                     getuser.marks = 5
                     recfun(getuser)
         if getuser.freezeflag == 1:
