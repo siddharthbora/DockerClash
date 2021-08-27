@@ -1,4 +1,4 @@
-# Dockerfile to build
+# Dockerfile to
 
 FROM python:3.7-buster
 
